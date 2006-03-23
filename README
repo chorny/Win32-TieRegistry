@@ -1,0 +1,168 @@
+Win32::TieRegistry -- Perl module to easily use a Registry
+    (on Win32 systems so far).
+by Tye McQueen, tye@metronet.com, see http://www.metronet.com/~tye/.
+
+See TieRegistry.pm for full [pod] documentation.
+
+If you did not get this module as part of libwin32, you might
+want to get a recent version of libwin32 from CPAN which should
+include this module and the Win32API::Registry module that it
+uses.
+
+The Win32::TieRegistry module lets you manipulate the Registry
+via objects [as in "object oriented"] or via tied hashes.  But
+you will probably mostly use objects which are also references
+to tied hashes that allow you to mix both access methods.
+
+By default, Win32::TieRegistry exports one global variable,
+$Registry, which is a combination of a Perl object and a reference
+to a tied hash and represents the virtual "root" of the Registry.
+Use $Registry as a reference to a tied hash [as in,
+$Registry->{"KeyName/"}] to open Registry keys and you get more
+objects/references-to-tied-hashes.  Use these or $Registry to make
+Win32::TieRegistry method calls [as in $key->Information("Class")]
+and/or as references to tied hashes [as in $key->{"/ValueName"}]
+to do just about anything with the Registry.
+
+Summary of using tied hashes
+
+For the impatient, this may be the only documentation you need
+to read to get started.  For best results, always append one
+delimeter to the end of each Registry key name and prepend one
+delimeter to the front of each Registry value name.
+
+The root keys for use with $Registry are:
+    Classes		HKEY_CLASSES_ROOT
+    CUser		HKEY_CURRENT_USER
+    LMachine		HKEY_LOCAL_MACHINE
+    Users		HKEY_USERS
+    PerfData		HKEY_PERFORMANCE_DATA
+    CConfig		HKEY_CURRENT_CONFIG
+    DynData		HKEY_DYN_DATA
+Note that upper vs. lower case letters matter for these (but not
+for other subkey names nor value names).
+
+Opening keys
+
+    use Win32::TieRegistry( Delimiter=>"/" );
+    $swKey= $Registry->{"LMachine/Software/"};
+    $winKey= $swKey->{"Microsoft/Windows/CurrentVersion/"};
+    $userKey= $Registry->
+      {"CUser/Software/Microsoft/Windows/CurrentVersion/"};
+    $remoteKey= $Registry->{"//HostName/LMachine/"};
+
+Reading values
+
+    $progDir= $winKey->{"/ProgramFilesDir"};    # "C:\\Program Files"
+    $tip21= $winKey->{"Explorer/Tips//21"};     # Text of tip #21.
+
+    $winKey->ArrayValues(1);
+    ( $devPath, $type )= $winKey->{"/DevicePath"};
+    # $devPath eq "%SystemRoot%\\inf"
+    # $type eq "REG_EXPAND_SZ"  [if you have SetDualVar.pm installed]
+    # $type == REG_EXPAND_SZ  [if you did "use Win32API::Registry qw(REG_)"]
+
+Setting values
+
+    $winKey->{"Setup//SourcePath"}= "\\\\SwServer\\SwShare\\Windows";
+    # Simple.  Assumes data type of REG_SZ.
+
+    $winKey->{"Setup//Installation Sources"}=
+      [ "D:\x00\\\\SwServer\\SwShare\\Windows\0\0", "REG_MULTI_SZ" ];
+    # "\x00" and "\0" used to mark ends of each string and end of list.
+
+    $userKey->{"Explorer/Tips//DisplayInitialTipWindow"}=
+      [ pack("L",0), "REG_DWORD" ];
+    $userKey->{"Explorer/Tips//Next"}= [ pack("S",3), "REG_BINARY" ];
+    $userKey->{"Explorer/Tips//Show"}= [ pack("L",0), "REG_BINARY" ];
+
+Adding keys
+
+    $swKey->{"FooCorp/"}= {
+        "FooWriter/" => {
+            "/Version" => "4.032",
+            "Startup/" => {
+                "/Title" => "Foo Writer Deluxe ][",
+                "/WindowSize" => [ pack("LL",$wid,$ht), REG_BINARY ],
+                "/TaskBarIcon" => [ "0x0001", REG_DWORD ],
+            },
+            "Compatibility/" => {
+                "/AutoConvert" => "Always",
+                "/Default Palette" => "Windows Colors",
+            },
+        },
+        "/License", => "0123-9C8EF1-09-FC",
+    };
+
+Listing all subkeys and values
+
+    @members= keys( %{$swKey} );
+    @subKeyNames= grep(  m#^/#,  keys( %{$swKey->{"Classes/batfile/"}} )  );
+    # @subKeyNames= ( "/", "/EditFlags" );
+    @valueNames= grep(  ! m#^/#,  keys( %{$swKey->{"Classes/batfile/"}} )  );
+    # @valueNames= ( "DefaultIcon/", "shell/", "shellex/" );
+
+Deleting values or keys with no subkeys
+
+    $oldValue= delete $userKey->{"Explorer/Tips//Next"};
+
+    $oldValues= delete $userKey->{"Explorer/Tips/"};
+    # $oldValues will be reference to hash containing deleted keys values.
+
+Closing keys
+
+    undef $swKey;               # Explicit way to close a key.
+    $winKey= "Anything else";   # Implicitly closes a key.
+    exit 0;                     # Implicitly closes all keys.
+
+Installation
+
+If you install a version of libwin32 that includes this module,
+then you are done.  In addition, you might want to obtain and
+install the SetDualVar module to enhance some features of this
+module.
+
+If you don't install libwin32 or can't find a version that
+includes this module, then you can install this module directly. 
+Win32::TieRegistry installs like any standard Perl module.  First,
+get and install the Win32API::Registry module.  For best results,
+also get and install the SetDualVar module and make sure your Perl
+distribution included the Win32::WinError module.
+
+Then you can use the following commands to install
+Win32::TieRegistry:
+
+    unzip Win32-TieRegistry-0.20.zip
+    cd Win32-TieRegistry-0.20
+    perl Makefile.PL
+    make install	[or "nmake install" or "dmake install"]
+
+Or, if you don't have a "make" command [usually as part of a C
+compiler or a binary distribution of Perl], you can get away with
+simply copying the TieRegistry.pm file into the "Win32"
+subdirectory of Perl's "lib" directory [or into the "Win32"
+subdirectory of the directory listed by the command
+    perl -MConfig -e "print $Config{sitelib}"
+].
+
+Because Win32::TieRegistry requires Win32API::Registry which uses
+the standard Perl tools for building extensions and these are not
+supported with the ActiveState port of Perl, Win32::TieRegistry
+cannot be used with the ActiveState port of Perl [but can be used
+with an ActiveState bundle of Perl version 5.004 or beyond]. 
+Sorry.
+
+This module was originally called C<Tie::Registry>.  Changing code
+that used C<Tie::Registry> over to C<Win32::TieRegistry> is trivial
+as the module name should only be mentioned once, in the C<use>
+line.  However, finding all of the places that used C<Tie::Registry>
+may not be completely trivial so we have included F<Tie/Registry.pm>
+which you can install to provide backward compatibility.
+
+SEE ALSO
+
+Win32API::Registry [required] - Provides Reg*(), HKEY_*, KEY_*, REG_*.
+
+Win32::WinError [optional] - Defines ERROR_* values.
+
+SetDualVar [optional] - For returning values as combo string/integer.
