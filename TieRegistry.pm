@@ -6,21 +6,18 @@
 # Skip to "=head" line for user documentation.
 #
 
-
 package Win32::TieRegistry;
-
 
 use strict;
 use vars qw( $PACK $VERSION @ISA @EXPORT @EXPORT_OK );
 
-$PACK= "Win32::TieRegistry";	# Used in error messages.
-$VERSION= '0.24';		# Released 2001-02-06
-
+$PACK    = 'Win32::TieRegistry'; # Used in error messages.
+$VERSION = '0.25';               # Released 2006-03-23
 
 use Carp;
 
 require Tie::Hash;
-@ISA= qw(Tie::Hash);
+@ISA = qw(Tie::Hash);
 
 # Required other modules:
 use Win32API::Registry 0.12 qw( :KEY_ :HKEY_ :REG_ );
@@ -28,21 +25,20 @@ use Win32API::Registry 0.12 qw( :KEY_ :HKEY_ :REG_ );
 #Optional other modules:
 use vars qw( $_NoMoreItems $_FileNotFound $_TooSmall $_MoreData $_SetDualVar );
 
-if(  eval { require Win32::WinError }  ) {
-    $_NoMoreItems= Win32::WinError::constant("ERROR_NO_MORE_ITEMS",0);
-    $_FileNotFound= Win32::WinError::constant("ERROR_FILE_NOT_FOUND",0);
-    $_TooSmall= Win32::WinError::constant("ERROR_INSUFFICIENT_BUFFER",0);
-    $_MoreData= Win32::WinError::constant("ERROR_MORE_DATA",0);
+if ( eval { require Win32::WinError } ) {
+    $_NoMoreItems  = Win32::WinError::constant("ERROR_NO_MORE_ITEMS",0);
+    $_FileNotFound = Win32::WinError::constant("ERROR_FILE_NOT_FOUND",0);
+    $_TooSmall     = Win32::WinError::constant("ERROR_INSUFFICIENT_BUFFER",0);
+    $_MoreData     = Win32::WinError::constant("ERROR_MORE_DATA",0);
 } else {
-    $_NoMoreItems= "^No more data";
-    $_FileNotFound= "cannot find the file";
-    $_TooSmall= " data area passed to ";
-    $_MoreData= "^more data is avail";
+    $_NoMoreItems  = "^No more data";
+    $_FileNotFound = "cannot find the file";
+    $_TooSmall     = " data area passed to ";
+    $_MoreData     = "^more data is avail";
 }
-if(  $_SetDualVar= eval { require SetDualVar }  ) {
+if ( $_SetDualVar = eval { require SetDualVar }  ) {
     import SetDualVar;
 }
-
 
 #Implementation details:
 #    When opened:
@@ -79,27 +75,26 @@ if(  $_SetDualVar= eval { require SetDualVar }  ) {
 # Option flag bits:
 use vars qw( $Flag_ArrVal $Flag_TieVal $Flag_DualTyp $Flag_DualBin
 	     $Flag_FastDel $Flag_HexDWord $Flag_Split $Flag_FixNulls );
-$Flag_ArrVal=	0x0001;
-$Flag_TieVal=	0x0002;
-$Flag_FastDel=	0x0004;
-$Flag_HexDWord=	0x0008;
-$Flag_Split=	0x0010;
-$Flag_DualTyp=	0x0020;
-$Flag_DualBin=	0x0040;
-$Flag_FixNulls=	0x0080;
-
+$Flag_ArrVal   = 0x0001;
+$Flag_TieVal   = 0x0002;
+$Flag_FastDel  = 0x0004;
+$Flag_HexDWord = 0x0008;
+$Flag_Split    = 0x0010;
+$Flag_DualTyp  = 0x0020;
+$Flag_DualBin  = 0x0040;
+$Flag_FixNulls = 0x0080;
 
 use vars qw( $RegObj %_Roots %RegHash $Registry );
 
 # Short-hand for HKEY_* constants:
 %_Roots= (
-    "Classes" =>	HKEY_CLASSES_ROOT,
-    "CUser" =>		HKEY_CURRENT_USER,
-    "LMachine" =>	HKEY_LOCAL_MACHINE,
-    "Users" =>		HKEY_USERS,
-    "PerfData" =>	HKEY_PERFORMANCE_DATA,	# Too picky to be useful
-    "CConfig" =>	HKEY_CURRENT_CONFIG,
-    "DynData" =>	HKEY_DYN_DATA,		# Too picky to be useful
+    "Classes"  => HKEY_CLASSES_ROOT,
+    "CUser"    => HKEY_CURRENT_USER,
+    "LMachine" => HKEY_LOCAL_MACHINE,
+    "Users"    => HKEY_USERS,
+    "PerfData" => HKEY_PERFORMANCE_DATA, # Too picky to be useful
+    "CConfig"  => HKEY_CURRENT_CONFIG,
+    "DynData"  => HKEY_DYN_DATA,         # Too picky to be useful
 );
 
 # Basic master Registry object:
@@ -138,12 +133,12 @@ use vars qw( @_opt_subs %_opt_subs );
 
 sub import
 {
-    my $pkg= shift(@_);
-    my $level= $Exporter::ExportLevel;
-    my $expto= caller($level);
-    my @export= ();
-    my @consts= ();
-    my $registry= $Registry->Clone;
+    my $pkg      = shift(@_);
+    my $level    = $Exporter::ExportLevel;
+    my $expto    = caller($level);
+    my @export   = ();
+    my @consts   = ();
+    my $registry = $Registry->Clone;
     local( $_ );
     while(  @_  ) {
 	$_= shift(@_);
@@ -198,7 +193,7 @@ sub import
 	    croak "${PACK}->import:  Invalid option ($_)";
 	}
     }
-    Win32API::Registry->export( $expto, @consts )   if  @consts;
+    Win32API::Registry->export( $expto, @consts ) if  @consts;
     @export= ('$Registry')   unless  @export;
     while(  @export  ) {
 	$_= shift( @export );
@@ -311,14 +306,13 @@ sub _rootKey
 
 sub _open
 {
-    my $this= shift(@_);
-    $this= tied(%$this)   if  ref($this)  &&  tied(%$this);
-    my $subPath= shift(@_);
-    my $sam= @_ ? shift(@_) : $this->Access;
-    my $subKey= join( $this->OS_Delimiter, @$subPath );
-    my $handle= 0;
-    $this->RegOpenKeyEx( $subKey, 0, $sam, $handle )
-      or  return ();
+    my $this    = shift(@_);
+    $this       = tied(%$this)   if  ref($this)  &&  tied(%$this);
+    my $subPath = shift(@_);
+    my $sam     = @_ ? shift(@_) : $this->Access;
+    my $subKey  = join( $this->OS_Delimiter, @$subPath );
+    my $handle  = 0;
+    $this->RegOpenKeyEx( $subKey, 0, $sam, $handle ) or return ();
     return $this->_new( $handle, [ @{$this->_Path}, @$subPath ],
       { ACCESS=>$sam, ( defined($this->{UNLOADME}) ? ("DEPENDON",$this)
 	: defined($this->{DEPENDON}) ? ("DEPENDON",$this->{DEPENDON}) : () )
