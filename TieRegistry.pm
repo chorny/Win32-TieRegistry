@@ -1,3 +1,5 @@
+package Win32::TieRegistry;
+
 # Win32/TieRegistry.pm -- Perl module to easily use a Registry
 # (on Win32 systems so far).
 # by Tye McQueen, tye@metronet.com, see http://www.metronet.com/~tye/.
@@ -6,18 +8,16 @@
 # Skip to "=head" line for user documentation.
 #
 
-package Win32::TieRegistry;
-
 use strict;
-use vars qw( $PACK $VERSION @ISA @EXPORT @EXPORT_OK );
-
-$PACK    = 'Win32::TieRegistry'; # Used in error messages.
-$VERSION = '0.25';               # Released 2006-03-23
-
 use Carp;
 
-require Tie::Hash;
-@ISA = qw(Tie::Hash);
+use vars qw( $PACK $VERSION @ISA @EXPORT @EXPORT_OK );
+BEGIN {
+	$PACK    = 'Win32::TieRegistry'; # Used in error messages.
+	$VERSION = '0.26';
+	require Tie::Hash;
+	@ISA = qw(Tie::Hash);
+}
 
 # Required other modules:
 use Win32API::Registry 0.12 qw( :KEY_ :HKEY_ :REG_ );
@@ -73,16 +73,20 @@ if ( $_SetDualVar = eval { require SetDualVar }  ) {
 #Package-local variables:
 
 # Option flag bits:
-use vars qw( $Flag_ArrVal $Flag_TieVal $Flag_DualTyp $Flag_DualBin
-	     $Flag_FastDel $Flag_HexDWord $Flag_Split $Flag_FixNulls );
-$Flag_ArrVal   = 0x0001;
-$Flag_TieVal   = 0x0002;
-$Flag_FastDel  = 0x0004;
-$Flag_HexDWord = 0x0008;
-$Flag_Split    = 0x0010;
-$Flag_DualTyp  = 0x0020;
-$Flag_DualBin  = 0x0040;
-$Flag_FixNulls = 0x0080;
+use vars qw(
+	$Flag_ArrVal $Flag_TieVal $Flag_DualTyp $Flag_DualBin
+	$Flag_FastDel $Flag_HexDWord $Flag_Split $Flag_FixNulls
+);
+BEGIN {
+	$Flag_ArrVal   = 0x0001;
+	$Flag_TieVal   = 0x0002;
+	$Flag_FastDel  = 0x0004;
+	$Flag_HexDWord = 0x0008;
+	$Flag_Split    = 0x0010;
+	$Flag_DualTyp  = 0x0020;
+	$Flag_DualBin  = 0x0040;
+	$Flag_FixNulls = 0x0080;
+}
 
 use vars qw( $RegObj %_Roots %RegHash $Registry );
 
@@ -1709,12 +1713,14 @@ sub AllowPriv { my $self= shift(@_);
 # Autoload methods go after =cut, and are processed by the autosplit program.
 
 1;
+
 __END__
+
+=pod
 
 =head1 NAME
 
-Win32::TieRegistry - Powerful and easy ways to manipulate a registry
-[on Win32 for now].
+Win32::TieRegistry - Manipulate the Win32 Registry
 
 =head1 SYNOPSIS
 
@@ -1791,7 +1797,7 @@ contain the delimiter character [backslash: C<'\\'>] nor nul
 [C<'\0'>].  Each subkey is also a key and so can contain subkeys
 and values [and has a class, time stamp, and security information].
 
-Each value has a name:  a string which E<can> be blank and E<can>
+Each value has a name:  a string which B<can> be blank and B<can>
 contain the delimiter character [backslash: C<'\\'>] and any
 character except for null, C<'\0'>.  Each value also has data
 associated with it.  Each value's data is a contiguous chunk of
@@ -1839,7 +1845,7 @@ will split these values into an array of strings for you.
 =item REG_DWORD
 
 A long [4-byte] integer value.  These values are expected either
-packed into a 4-character string or as a hex string of E<more than>
+packed into a 4-character string or as a hex string of B<more than>
 4 characters [but I<not> as a numeric value, unfortunately, as there is
 no sure way to tell a numeric value from a packed 4-byte string that
 just happens to be a string containing a valid numeric value].
@@ -1953,7 +1959,7 @@ is "special" and all but the most carefully constructed calls will
 fail, usually with C<ERROR_INSUFFICIENT_BUFFER>.  For example, you
 can't enumerate key names without also enumerating values which
 require huge buffers but the exact buffer size required cannot be
-determined beforehand because C<RegQueryInfoKey()> E<always> fails
+determined beforehand because C<RegQueryInfoKey()> B<always> fails
 with C<ERROR_INSUFFICIENT_BUFFER> for C<HKEY_PERFORMANCE_DATA> no
 matter how it is called.  So it is currently not very useful to
 tie a hash to this key.  You can use it to create an object to use
@@ -2422,7 +2428,7 @@ modifying a key, you should open it with C<KEY_READ> access as
 you may not have C<KEY_WRITE> access to it or some of its subkeys.
 
 If the C<"Access"> option value is a string that starts with
-C<"KEY_">, then it should match E<one> of the predefined access
+C<"KEY_">, then it should match B<one> of the predefined access
 levels [probably C<"KEY_READ">, C<"KEY_WRITE">, or
 C<"KEY_ALL_ACCESS">] exported by the I<Win32API::Registry> module.
 Otherwise, a numeric value is expected.  For maximum flexibility,
@@ -3145,8 +3151,8 @@ information.
 If true, specifies that the new key should be volatile, that is,
 stored only in memory and not backed by a hive file [and not saved
 if the computer is rebooted].  This option is ignored under
-Windows 95.  Specifying C<Volatile=E<GT>1>  is the same as
-specifying C<Options=E<GT>REG_OPTION_VOLATILE>.
+Windows 95.  Specifying C<Volatile=E<gt>1>  is the same as
+specifying C<Options=E<gt>REG_OPTION_VOLATILE>.
 
 =item Backup
 
@@ -3159,8 +3165,8 @@ process has enabled C<"SeRestorePrivilege">, then the subkey is
 opened with C<KEY_WRITE> access as the C<"LocalSystem"> user which
 should have access to all subkeys.
 
-This option is ignored under Windows 95.  Specifying C<Backup=E<GT>1>
-is the same as specifying C<Options=E<GT>REG_OPTION_BACKUP_RESTORE>.
+This option is ignored under Windows 95.  Specifying C<Backup=E<gt>1>
+is the same as specifying C<Options=E<gt>REG_OPTION_BACKUP_RESTORE>.
 
 =item Options
 
@@ -3221,7 +3227,7 @@ or a remote computer and C<$newSubKey> should not contain any
 occurrences of either the delimiter or the OS delimiter.
 
 If C<$newSubKey> is not specified, then it is as if C<$key>
-was C<$Registry-E<GT>{LMachine}> and C<$newSubKey> is
+was C<$Registry-E<gt>{LMachine}> and C<$newSubKey> is
 C<"PerlTie:999"> where C<"999"> is actually a sequence number
 incremented each time this process calls C<Load()>.
 
@@ -3788,6 +3794,15 @@ warnings) that were encountered.  Let the user control whether
 the complex operation continues in spite of errors.
 
 =back
+
+=head1 COPYRIGHT
+
+Copyright 1999 - 2006 Tye McQueen.
+
+Some parts copyright 2007 Adam Kennedy.
+
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
 
 =cut
 
