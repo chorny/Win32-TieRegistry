@@ -13,14 +13,14 @@ use Carp;
 
 use vars qw( $PACK $VERSION @ISA @EXPORT @EXPORT_OK );
 BEGIN {
-	$PACK    = 'Win32::TieRegistry'; # Used in error messages.
+	$PACK    = 'Win32::TieRegistry';
 	$VERSION = '0.26';
 	require Tie::Hash;
-	@ISA = qw(Tie::Hash);
+	@ISA = qw{Tie::Hash};
 }
 
 # Required other modules:
-use Win32API::Registry 0.12 qw( :KEY_ :HKEY_ :REG_ );
+use Win32API::Registry 0.24 qw( :KEY_ :HKEY_ :REG_ );
 
 #Optional other modules:
 use vars qw( $_NoMoreItems $_FileNotFound $_TooSmall $_MoreData $_SetDualVar );
