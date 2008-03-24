@@ -1,5 +1,4 @@
-Win32::TieRegistry -- Perl module to easily use a Registry
-    (on Win32 systems so far).
+Win32::TieRegistry -- Perl module to easily use a Win32 Registry
 by Tye McQueen, tye@metronet.com, see http://www.metronet.com/~tye/.
 
 See TieRegistry.pm for full [pod] documentation.

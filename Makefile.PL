@@ -1,10 +1,10 @@
+use 5.006;
+use strict;
 use ExtUtils::MakeMaker;
 
 # This module is only for Win32
 unless ( $^O eq 'MSWin32' or $^O eq 'cygwin' ) {
-	print "Win32::TieRegistry is only applicable to Win32 and cygwin\n";
-	print "Install Result: N/A\n";
-	exit(255);
+	die "No support for OS";
 }
 
 WriteMakefile(

@@ -5,4 +5,4 @@ MANIFEST
 README
 TieRegistry.pm
 Tie/Registry.pm
-test.pl
+t/02_main.t

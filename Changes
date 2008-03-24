@@ -1,5 +1,13 @@
 Revision history for Perl extension Win32::TieRegistry.
 
+0.26 
+	- Removing legacy Install.bat
+	- Moving existing test script to t directory
+	- Cleaned up the legacy Tie::Registry so it has POD
+	  (that mostly just says it is deprecated)
+
+0.25  missing
+
 0.24  2001-02-06 19:00
 	- Silenced error that could appear "at random" during "cleanup":
 		(Can't call method "FETCH" on an undefined value)
