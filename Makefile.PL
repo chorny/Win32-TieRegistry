@@ -13,6 +13,7 @@ WriteMakefile(
 	'LIBS'         => [''],             # e.g., '-lm'
 	'DEFINE'       => '',               # e.g., '-DHAVE_SOMETHING'
 	'INC'          => '',               # e.g., '-I/usr/include/other'
+	'LICENSE'      => 'perl',
 	'PREREQ_PM'    => {
 		'Carp'               => 0,
 		'Tie::Hash'          => 0,
