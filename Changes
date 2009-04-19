@@ -1,10 +1,12 @@
 Revision history for Perl extension Win32::TieRegistry.
 
-0.26 
+0.26 Sun 19 Apr 2009
 	- Removing legacy Install.bat
 	- Moving existing test script to t directory
+	- Moving pm files into lib
 	- Cleaned up the legacy Tie::Registry so it has POD
 	  (that mostly just says it is deprecated)
+	- Migrated test to Test::More
 
 0.25  missing
 

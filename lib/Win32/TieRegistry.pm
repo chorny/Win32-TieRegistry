@@ -7,16 +7,16 @@ package Win32::TieRegistry;
 #
 # Skip to "=head" line for user documentation.
 #
-
+use 5.006;
 use strict;
 use Carp;
+use Tie::Hash ();
 
 use vars qw( $PACK $VERSION @ISA @EXPORT @EXPORT_OK );
 BEGIN {
 	$PACK    = 'Win32::TieRegistry';
 	$VERSION = '0.26';
-	require Tie::Hash;
-	@ISA = qw{Tie::Hash};
+	@ISA     = 'Tie::Hash';
 }
 
 # Required other modules:
