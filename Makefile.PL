@@ -20,5 +20,5 @@ WriteMakefile(
 		# If we are upgrading this, then we want to also
 		# force the upgrade of the underlying module.
 		'Win32API::Registry' => '0.24',
-		},
+	},
 );
