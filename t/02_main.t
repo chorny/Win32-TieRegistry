@@ -6,7 +6,14 @@ BEGIN {
 	$^W = 1;
 }
 
-use Test::More tests => 3;
+use Test::More;
+BEGIN {
+	if ( $^O eq 'MSWin32' or $^O eq 'cygwin' ) {
+		plan( tests => 3 );
+	} else {
+		plan( skip_all => 'Not testing on non-Windows' );
+	}
+}
 
 my $reg;
 use Win32::TieRegistry (

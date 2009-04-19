@@ -2,11 +2,11 @@ use 5.006;
 use strict;
 use ExtUtils::MakeMaker;
 
-# This module is only for Win32
-unless ( $^O eq 'MSWin32' or $^O eq 'cygwin' ) {
-	print "Not supported on this platform\n";
-	exit(0);
-}
+# Don't prevent this running on Win32.
+# THIS distribution is inherantly platform-neutral, but the underlying
+# dependency is not. Allow non-Win32 platforms to fail on our dependency,
+# instead of on this module. This allows any unusual cases like Wine
+# (that are able to get the dependency installed) to install this ok.
 
 WriteMakefile(
 	'NAME'         => 'Win32::TieRegistry',
