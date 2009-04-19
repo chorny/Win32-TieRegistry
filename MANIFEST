@@ -1,8 +1,0 @@
-Changes
-Install.bat
-Makefile.PL
-MANIFEST
-README
-TieRegistry.pm
-Tie/Registry.pm
-t/02_main.t
