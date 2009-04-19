@@ -10,6 +10,7 @@ use ExtUtils::MakeMaker;
 
 WriteMakefile(
 	'NAME'         => 'Win32::TieRegistry',
+	'ABSTRACT'     => 'Manipulate the Win32 Registry',
 	'VERSION_FROM' => 'lib/Win32/TieRegistry.pm',
 	'LICENSE'      => 'perl',
 	'PREREQ_PM'    => {
