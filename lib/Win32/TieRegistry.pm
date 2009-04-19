@@ -3799,7 +3799,7 @@ the complex operation continues in spite of errors.
 
 Copyright 1999 - 2006 Tye McQueen.
 
-Some parts copyright 2007 - 2008 Adam Kennedy.
+Some parts copyright 2007 - 2009 Adam Kennedy.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
