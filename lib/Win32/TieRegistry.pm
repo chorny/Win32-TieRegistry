@@ -2383,7 +2383,7 @@ The C<new> method creates a new I<Win32::TieRegistry> object.
 C<new> is mostly a synonym for C<Open()> so see C<Open()> below for
 information on what arguments to pass in.  Examples:
 
-    $machKey= new Win32::TieRegistry "LMachine"
+    $machKey= Win32::TieRegistry->new("LMachine")
       or  die "Can't access HKEY_LOCAL_MACHINE key: $^E\n";
     $userKey= Win32::TieRegistry->new("CUser")
       or  die "Can't access HKEY_CURRENT_USER key: $^E\n";
@@ -3519,8 +3519,8 @@ Here are quick examples that document the most common functionality
 of all of the method functions [except for a few almost useless ones].
 
     # Just another way of saying Open():
-    $key= new Win32::TieRegistry "LMachine\\Software\\",
-      { Access=>KEY_READ()|KEY_WRITE(), Delimiter=>"\\" };
+    $key= Win32::TieRegistry->new("LMachine\\Software\\",
+      { Access=>KEY_READ()|KEY_WRITE(), Delimiter=>"\\" });
 
     # Open a Registry key:
     $subKey= $key->Open( "SubKey/SubSubKey/",
