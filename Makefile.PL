@@ -31,6 +31,12 @@ WriteMakefile1(
 			repository => 'git://github.com/chorny/Win32-TieRegistry.git',
 		},
 	},
+    $^O =~/win/i ? (
+        dist => {
+            TAR      => 'ptar',
+            TARFLAGS => '-c -C -f',
+        },
+    ) : (),
 );
 
 
