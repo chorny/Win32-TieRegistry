@@ -1368,7 +1368,7 @@ sub SetValue
     } elsif(  REG_DWORD == $type  &&  $data =~ /^0x[0-9a-fA-F]{3,}$/  ) {
 	$data= pack( "L", hex($data) );
 	# We could to $data=pack("L",$data) for REG_DWORD but I see
-	# no nice way to always destinguish when to do this or not.
+	# no nice way to always distinguish when to do this or not.
     }
     return $self->RegSetValueEx( $name, 0, $type, $data, length($data) );
 }
@@ -2017,7 +2017,7 @@ unambiguous:
     Put a delimiter after each key name.
     Put a delimiter in front of each value name.
 
-Exactly how the key string will be intepreted is governed by the
+Exactly how the key string will be interpreted is governed by the
 following cases, in the order listed.  These cases are designed
 to "do what you mean".  Most of the time you won't have to think
 about them, especially if you follow the two simple rules above.
@@ -2047,7 +2047,7 @@ If the hash is tied to a virtual root key, then the leading
 delimiter is ignored.  It should be followed by a valid Registry
 root key name [either a short-hand name like C<"LMachine">, an
 I<HKEY_*> value, or a numeric value].   This alternate notation is
-allowed in order to be more consistant with the C<Open()> method
+allowed in order to be more consistent with the C<Open()> method
 function.
 
 For all other Registry keys, the leading delimiter indicates
@@ -2444,7 +2444,7 @@ will be relative to the path of the original key [C<$key>].  If
 C<$sSubKey> begins with a single delimiter, then the path to the
 subkey to be opened will be relative to the virtual root of the
 Registry on whichever machine the original key resides.  If
-C<$sSubKey> begins with two consectutive delimiters, then those
+C<$sSubKey> begins with two consecutive delimiters, then those
 must be followed by a machine name which causes the C<Connect()>
 method function to be called.
 
@@ -2480,7 +2480,7 @@ if you wish to use the returned object as a tied hash [not just as
 an object], then use the C<TiedRef> method function after C<Connect>.
 
 C<$sMachineName> is the name of the remote machine.  You don't have
-to preceed the machine name with two delimiter characters.
+to precede the machine name with two delimiter characters.
 
 C<$sKeyPath> is a string specifying the remote key to be opened.
 Alternately C<$sKeyPath> can be a reference to an array value
@@ -2530,7 +2530,7 @@ For a simple object, just returns itself [C<$obj == $obj->ObjectRef>].
 For a reference to a tied hash [if it is also an object], C<ObjectRef>
 returns the simple object that the hash is tied to.
 
-This is primarilly useful when debugging since typing C<x $Registry>
+This is primarily useful when debugging since typing C<x $Registry>
 will try to display your I<entire> registry contents to your screen.
 But the debugger command C<x $Registry->ObjectRef> will just dump
 the implementation details of the underlying object to your screen.
@@ -3042,7 +3042,7 @@ it should be one the C<REG_*> constants.
 
 C<$ValueData> is the data to be stored in the value, probably packed
 into a Perl string.  Other supported formats for value data are
-listed below for each posible C<$ValueType>.
+listed below for each possible C<$ValueType>.
 
 =over
 
@@ -3237,7 +3237,7 @@ You can specify as the last argument a reference to a hash
 containing options.  You can specify the same options that you
 can specify to C<Open()>.  See C<Open()> for more information on
 those.  In addition, you can specify the option C<"NewSubKey">.
-The value of this option is interpretted exactly as if it was
+The value of this option is interpreted exactly as if it was
 specified as the C<$newSubKey> parameter and overrides the
 C<$newSubKey> if one was specified.
 
@@ -3420,7 +3420,7 @@ See I<Win32API::Registry> documentation for more information.
 =item Options
 
 You can list any option names that can be listed in the C<SetOptions()>
-method call, each folowed by the value to use for that option.
+method call, each followed by the value to use for that option.
 A Registry virtual root object is created, all of these options are
 set for it, then each variable to be imported/set is associated with
 this object.
@@ -3464,7 +3464,7 @@ Although greatly a matter of style, the "safest" practice is probably
 to specifically list all constants in the C<use Win32::TieRegistry>
 statement, specify C<use strict> [or at least C<use strict qw(subs)>],
 and use bare constant names when you want the numeric value.  This will
-detect mispelled constant names at compile time.
+detect misspelled constant names at compile time.
 
     use strict;
     my $Registry;
@@ -3743,7 +3743,7 @@ and confusing).  This includes references to C<$^E> perhaps not
 being meaningful.
 
 Because Perl hashes are case sensitive, certain lookups are also
-case sensistive.  In particular, the root keys ("Classes", "CUser",
+case sensitive.  In particular, the root keys ("Classes", "CUser",
 "LMachine", "Users", "PerfData", "CConfig", "DynData", and HKEY_*)
 must always be entered without changing between upper and lower
 case letters.  Also, the special rule for matching subkey names
