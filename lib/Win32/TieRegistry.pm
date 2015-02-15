@@ -693,11 +693,13 @@ sub _enumSubKeys
     my( $namSiz, $clsSiz )= $self->Information(
 			      qw( MaxSubKeyLen MaxSubClassLen ));
     $namSiz++;  $clsSiz++;
+    my $namSiz1 = $namSiz;
     while(  $self->RegEnumKeyEx(
 	      $pos++, $subkey, $namSiz, [], $class, $clsSiz, $time )  ) {
 	push( @subkeys, $subkey );
 	push( @classes, $class );
 	push( @times, $time );
+	$namSiz = $namSiz1; #RegEnumKeyEx modifies $namSiz
     }
     if(  ! _NoMoreItems()  ) {
 	return ();
