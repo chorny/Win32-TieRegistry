@@ -1,5 +1,9 @@
 Revision history for Perl extension Win32::TieRegistry.
 
+0.27  2015-02-15
+    - Fixed error that appeared on Strawberry perl 5.20
+    - General distribution maintenance
+
 0.26 Sun 19 Apr 2009
 	- Removing legacy Install.bat
 	- Moving existing test script to t directory
