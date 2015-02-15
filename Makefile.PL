@@ -26,7 +26,13 @@ WriteMakefile1(
 	TEST_REQUIRES => {
 		'Test::More'         => '0.42',
 	},
+	META_MERGE => {
+		resources => {
+			repository => 'git://github.com/chorny/Win32-TieRegistry.git',
+		},
+	},
 );
+
 
 sub WriteMakefile1 {  #Compatibility code for old versions of EU::MM. Written by Alexandr Ciornii, version 0.23. Added by eumm-upgrade.
 	my %params=@_;
@@ -55,3 +61,4 @@ sub WriteMakefile1 {  #Compatibility code for old versions of EU::MM. Written by
 
 	WriteMakefile(%params);
 }
+
