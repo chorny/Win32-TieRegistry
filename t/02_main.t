@@ -7,12 +7,10 @@ BEGIN {
 }
 
 use Test::More;
-BEGIN {
-	if ( $^O eq 'MSWin32' or $^O eq 'cygwin' ) {
-		plan( tests => 3 );
-	} else {
-		plan( skip_all => 'Not testing on non-Windows' );
-	}
+if ( $^O eq 'MSWin32' or $^O eq 'cygwin' ) {
+	plan( tests => 3 );
+} else {
+	plan( skip_all => 'Not testing on non-Windows' );
 }
 
 my $reg;
