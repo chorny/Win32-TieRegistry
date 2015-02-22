@@ -662,7 +662,8 @@ sub _enumValues
     my $pos= 0;
     my $name= "";
     my $nlen= 1+$self->Information("MaxValNameLen");
-    while(  $self->RegEnumValue($pos++,$name,$nlen,[],[],[],[])  ) {
+    while(  $self->RegEnumValue($pos++,$name,my $nlen1=$nlen,[],[],[],[])  ) {
+    #RegEnumValue modifies $nlen1
 	push( @names, $name );
     }
     if(  ! _NoMoreItems()  ) {
