@@ -23,6 +23,6 @@ use Win32::TieRegistry (
 
 my $val = $reg->{ "CUser/Software/Microsoft/Windows/CurrentVersion/"
     . "Policies/Explorer//NoDriveTypeAutoRun" };
-ok( $val, 'Opened CU/SW/MS/Win/CV/Pol/Exp//NoDriveTypeAutoRun' ) or diag "$^E = $^E";
+ok( $val, 'Opened CU/SW/MS/Win/CV/Pol/Exp//NoDriveTypeAutoRun' ) or diag "\$^E = $^E";
 is( REG_DWORD, $val->[1], 'Type is REG_DWORD' );
 like( $val->[0], qr/^0x[\da-f]{8}$/i, 'Value matches expected' );
