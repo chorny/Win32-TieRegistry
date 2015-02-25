@@ -16,6 +16,7 @@ WriteMakefile1(
 	'PREREQ_PM'    => {
 		'Carp'               => 0,
 		'Tie::Hash'          => 0,
+		'Win32::WinError'    => 0,
 
 		# If we are upgrading Win32::TieRegistry,
 		# then we want to also force the upgrade
