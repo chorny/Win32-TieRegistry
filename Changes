@@ -1,5 +1,8 @@
 Revision history for Perl extension Win32::TieRegistry.
 
+0.28  2015-02-26
+    - Fixed error in sub _enumValues
+
 0.27  2015-02-15
     - Fixed error that appeared on Strawberry perl 5.20
     - General distribution maintenance
