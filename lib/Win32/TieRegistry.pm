@@ -1743,7 +1743,7 @@ Win32::TieRegistry - Manipulate the Win32 Registry
   $pound= $Registry->Delimiter("/");
   $diskKey= $Registry->{"LMachine/System/Disk/"}
     or  die "Can't read LMachine/System/Disk key: $^E\n";
-  $data= $key->{"/Information"}
+  $data= $diskKey->{"/Information"}
     or  die "Can't read LMachine/System/Disk//Information value: $^E\n";
   $remoteKey= $Registry->{"//ServerA/LMachine/System/"}
     or  die "Can't read //ServerA/LMachine/System/ key: $^E\n";
