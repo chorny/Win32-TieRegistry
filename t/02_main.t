@@ -21,7 +21,7 @@ use Win32::TieRegistry (
 	":REG_", ":KEY_",
 );
 
-$reg = $reg->Open('', {Access => KEY_READ} );
+$reg = $reg->Open('', {Access => KEY_READ} ); # RT#102385
 my $val = $reg->{ "CUser/Software/Microsoft/Windows/CurrentVersion/"
     . "Policies/Explorer//NoDriveTypeAutoRun" };
 ok( $val, 'Opened CU/SW/MS/Win/CV/Pol/Exp//NoDriveTypeAutoRun' ) or diag "\$^E = $^E";

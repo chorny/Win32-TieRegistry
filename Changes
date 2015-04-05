@@ -1,5 +1,8 @@
 Revision history for Perl extension Win32::TieRegistry.
 
+0.29  2015-04-05
+    - Fixed error that appeared in 02_main.t when running as regular user
+
 0.28  2015-02-26
     - Fixed error in sub _enumValues
 

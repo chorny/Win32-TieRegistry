@@ -15,7 +15,7 @@ use Tie::Hash ();
 use vars qw( $PACK $VERSION @ISA @EXPORT @EXPORT_OK );
 BEGIN {
 	$PACK    = 'Win32::TieRegistry';
-	$VERSION = '0.28';
+	$VERSION = '0.29';
 	@ISA     = 'Tie::Hash';
 }
 
