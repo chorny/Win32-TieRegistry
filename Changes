@@ -1,5 +1,8 @@
 Revision history for Perl extension Win32::TieRegistry.
 
+0.29_01 2015-04-12
+    - Better diagnostics in case of failure in 02_main.t
+
 0.29  2015-04-05
     - Fixed error that appeared in 02_main.t when running as regular user
 
