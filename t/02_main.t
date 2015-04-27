@@ -23,14 +23,21 @@ use Win32::TieRegistry (
 );
 
 $reg = $reg->Open('', {Access => KEY_READ} ); # RT#102385
-my $val = $reg->{ "CUser/Software/Microsoft/Windows/CurrentVersion/"
-    . "Policies/Explorer//NoDriveTypeAutoRun" };
+my $branch = "CUser/Software/Microsoft/Windows/CurrentVersion/Policies/Explorer";
+my $val = $reg->{ "$branch//NoDriveTypeAutoRun" };
 if (!defined($val)) {
   diag "\$^E = $^E, code=".(0+$^E).' regLastError='.(regLastError());
-  diag "does not exist" unless exists $reg->{ "CUser/Software/Microsoft/Windows/CurrentVersion/"
-    . "Policies/Explorer//NoDriveTypeAutoRun" };
-  diag "parent does not exist" unless exists $reg->{ "CUser/Software/Microsoft/Windows/CurrentVersion/"
-    . "Policies/Explorer" };
+  diag "does not exist" unless exists $reg->{ "$branch//NoDriveTypeAutoRun" };
+  my @b = split '/', $branch;
+  foreach my $i (reverse (0..$#b)) {
+    my $b1 = join('/', @b[0..$i]);
+    if (exists $reg->{$b1}) {
+      diag "only $b1 exists";
+      last;
+    }
+  }
+  #diag "parent does not exist" unless exists $reg->{ "CUser/Software/Microsoft/Windows/CurrentVersion/"
+  #  . "Policies/Explorer" };
 }
 ok( $val, 'Opened CU/SW/MS/Win/CV/Pol/Exp//NoDriveTypeAutoRun' );
 is( REG_DWORD, $val->[1], 'Type is REG_DWORD' );
