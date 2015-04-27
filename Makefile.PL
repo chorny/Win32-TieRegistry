@@ -21,7 +21,7 @@ WriteMakefile1(
 		# If we are upgrading Win32::TieRegistry,
 		# then we want to also force the upgrade
 		# of the underlying module.
-		'Win32API::Registry' => '0.30',
+		'Win32API::Registry' => '0.33',
 	},
 	MIN_PERL_VERSION => '5.006',
 	TEST_REQUIRES => {
