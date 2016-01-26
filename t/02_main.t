@@ -23,22 +23,16 @@ use Win32::TieRegistry (
 );
 
 $reg = $reg->Open('', {Access => KEY_READ} ); # RT#102385
-my $branch = "CUser/Software/Microsoft/Windows/CurrentVersion/Policies/Explorer";
-my $val = $reg->{ "$branch//NoDriveTypeAutoRun" };
-if (!defined($val)) {
-  diag "\$^E = $^E, code=".(0+$^E).' regLastError='.(regLastError());
-  diag "does not exist" unless exists $reg->{ "$branch//NoDriveTypeAutoRun" };
-  my @b = split '/', $branch;
-  foreach my $i (reverse (0..$#b)) {
-    my $b1 = join('/', @b[0..$i]);
-    if (exists $reg->{$b1}) {
-      diag "only $b1 exists";
-      last;
-    }
-  }
-  #diag "parent does not exist" unless exists $reg->{ "CUser/Software/Microsoft/Windows/CurrentVersion/"
-  #  . "Policies/Explorer" };
+
+my $branch_reg = 'HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer';
+my $output = qx{reg query "$branch_reg" 2>&1};
+my $error_code = $?;
+SKIP: {
+  my $branch = "CUser/Software/Microsoft/Windows/CurrentVersion/Policies/Explorer";
+  my $val = $reg->{ "$branch//NoDriveTypeAutoRun" };
+  skip('No NoDriveTypeAutoRun', 3) if !$error_code || $output !~ /NoDriveTypeAutoRun\s*REG_DWORD/;
+
+  ok( $val, 'Opened CU/SW/MS/Win/CV/Pol/Exp//NoDriveTypeAutoRun' );
+  is( REG_DWORD, $val->[1], 'Type is REG_DWORD' );
+  like( $val->[0], qr/^0x[\da-f]{8}$/i, 'Value matches expected' );
 }
-ok( $val, 'Opened CU/SW/MS/Win/CV/Pol/Exp//NoDriveTypeAutoRun' );
-is( REG_DWORD, $val->[1], 'Type is REG_DWORD' );
-like( $val->[0], qr/^0x[\da-f]{8}$/i, 'Value matches expected' );
