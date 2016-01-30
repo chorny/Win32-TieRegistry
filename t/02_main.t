@@ -30,7 +30,7 @@ my $error_code = $?;
 SKIP: {
   my $branch = "CUser/Software/Microsoft/Windows/CurrentVersion/Policies/Explorer";
   my $val = $reg->{ "$branch//NoDriveTypeAutoRun" };
-  skip('No NoDriveTypeAutoRun', 3) if !$error_code || $output !~ /NoDriveTypeAutoRun\s*REG_DWORD/;
+  skip('No NoDriveTypeAutoRun', 3) if $error_code || $output !~ /NoDriveTypeAutoRun\s*REG_DWORD/;
 
   ok( $val, 'Opened CU/SW/MS/Win/CV/Pol/Exp//NoDriveTypeAutoRun' );
   is( REG_DWORD, $val->[1], 'Type is REG_DWORD' );
