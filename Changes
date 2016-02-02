@@ -1,5 +1,7 @@
 Revision history for Perl extension Win32::TieRegistry.
 
+0.30  2016-02-20 - same as 0.29_03
+
 0.29_03 2016-01-31
     - 02_main.t should not fail now
     - use Appveyor
