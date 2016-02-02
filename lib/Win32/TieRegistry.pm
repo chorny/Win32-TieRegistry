@@ -3734,15 +3734,6 @@ string/integer values [optional].
 
 =head1 BUGS
 
-Perl5.004_02 has bugs that make I<Win32::TieRegistry> fail in
-strange and subtle ways.
-
-Using I<Win32::TieRegistry> with versions of Perl prior to 5.005
-can be tricky or impossible.  Most notes about this have been
-removed from the documentation (they get rather complicated
-and confusing).  This includes references to C<$^E> perhaps not
-being meaningful.
-
 Because Perl hashes are case sensitive, certain lookups are also
 case sensitive.  In particular, the root keys ("Classes", "CUser",
 "LMachine", "Users", "PerfData", "CConfig", "DynData", and HKEY_*)
